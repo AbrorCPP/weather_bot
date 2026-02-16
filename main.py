@@ -1,4 +1,6 @@
-from aiogram.types import Message
+from aiogram.enums import ParseMode
+from aiogram.types import Message, CallbackQuery
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram import Dispatcher,Bot
 from tokens import BOT_TOKEN,ADMINS
 from DB_conn import register_user
@@ -23,12 +25,26 @@ async def register(message: Message):
         await message.answer(text=f"Siz bazada mavjudisiz✨\nXatolik: {e}")
 
 @dp.message()
-async def taker(message: Message):
-    try:
-        text = get_city_name(message.text)
-        await message.answer(text)
-    except:
-        await message.answer("Yuborilgan text shahar nomi emas.⛔")
+async def answer_weather_data(message: Message):
+    city_name = message.text
+    weather_data = get_city_name(city_name)
+
+    if weather_data:
+        keyboard = InlineKeyboardBuilder()
+        keyboard.button(text = "Shaharni saqlash", callback_data=f"save:{city_name}")
+
+        await message.answer(
+            text=weather_data,
+            parse_mode=ParseMode.HTML,
+            reply_markup=keyboard.as_markup()
+        )
+    else:
+        await message.answer(text = "Bunday shahar topilmadi")
+
+@dp.callback_query()
+async def save_city(query: CallbackQuery):
+    data = query.data
+    city_name = data.split(":")[-1]
 
 async def notfy_admins():
     for admin_id in ADMINS:
