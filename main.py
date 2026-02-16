@@ -46,6 +46,17 @@ async def save_city(query: CallbackQuery):
     data = query.data
     city_name = data.split(":")[-1]
 
+    # city ... ni sqlash
+    keyboard = InlineKeyboardBuilder()
+    await query.answer(text = "Shahar saqlangan", show_alert=True)
+    keyboard.button(text = "Shahar saqlandi ✅", callback_data="...")
+
+    await query.message.edit_reply_markup(reply_markup=keyboard.as_markup())
+
+@dp.callback_query(lambda call: "..." in call.data)
+async def show_alert(call: CallbackQuery):
+    await call.answer(text = "Shahar saqlangan", show_alert=True)
+
 async def notfy_admins():
     for admin_id in ADMINS:
         await bot.send_message(chat_id=int(admin_id), text=f"Assalomu aleykum BOSS🕵️\nBot ishlashga tayyor🤖")
