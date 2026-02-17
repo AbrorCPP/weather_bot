@@ -55,7 +55,7 @@ async def save_city(query: CallbackQuery):
 
 @dp.callback_query(lambda call: "..." in call.data)
 async def show_alert(call: CallbackQuery):
-    await call.answer(text = "Shahar saqlangan", show_alert=True)
+    await call.answer(text = "Shahar saqlangan", show_alert=True, url = "https://www.youtube.com/watch?v=fRiiWIl5M3w")
 
 async def notfy_admins():
     for admin_id in ADMINS:
