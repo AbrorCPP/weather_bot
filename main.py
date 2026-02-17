@@ -31,7 +31,7 @@ async def answer_weather_data(message: Message):
 
     if weather_data:
         keyboard = InlineKeyboardBuilder()
-        keyboard.button(text = "Shaharni saqlash", callback_data=f"save:{city_name}")
+        keyboard.button(text = "Shaharni saqlash", callback_data=f"save:{city_name}", url = "https://www.youtube.com/watch?v=fRiiWIl5M3w")
 
         await message.answer(
             text=weather_data,
@@ -55,7 +55,7 @@ async def save_city(query: CallbackQuery):
 
 @dp.callback_query(lambda call: "..." in call.data)
 async def show_alert(call: CallbackQuery):
-    await call.answer(text = "Shahar saqlangan", show_alert=True, url = "https://www.youtube.com/watch?v=fRiiWIl5M3w")
+    await call.answer(text = "Shahar saqlangan", show_alert=True)
 
 async def notfy_admins():
     for admin_id in ADMINS:
