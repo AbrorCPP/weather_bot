@@ -1,3 +1,5 @@
+from typing import Any
+
 from pymysql import cursors, connect, IntegrityError
 from tokens import DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
 
@@ -50,7 +52,7 @@ def register_city(telegram_id: int, city_name: str):
             pass
 
 
-def get_user_cities(telegram_id: int):
+def get_user_cities(telegram_id: int) -> list[Any]:
     user = get_user(telegram_id)
     if not user:
         return []

@@ -29,7 +29,9 @@ async def register(message: Message):
 @dp.message(lambda message: message.text == "/saved")
 async def saved_city(message: Message):
     telegram_id = str(message.from_user.id)
-    cities = await get_user_cities(telegram_id)
+    cities = get_user_cities(int(telegram_id))
+
+    await message.answer(text = "Salom")
 
     if not cities:
         await message.answer("Sizda hali saqlangan shahar yo‘q ❌")
