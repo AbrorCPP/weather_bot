@@ -28,13 +28,17 @@ async def register(message: Message):
 
 @dp.message(lambda message: message.text == "/saved")
 async def saved_city(message: Message):
+    telegram_id = str(message.from_user.id)
+    cities = get_user_cities(telegram_id)
 
-    user_id = message.from_user.id
-    city_name = get_user_cities(int(user_id))
+    if not cities:
+        await message.answer("Sizda hali saqlangan shahar yo‘q ❌")
+        return
 
-    await message.answer(text=city_name)
-    await message.answer(text = "Saqlangan shaharlar", reply_markup = generate_cities_keyboard(city_name))
-
+    await message.answer(
+        text="Saqlangan shaharlar:",
+        reply_markup=generate_cities_keyboard(cities)
+    )
 
 @dp.message()
 async def answer_weather_data(message: Message):

@@ -1,7 +1,7 @@
 from pymysql import cursors,connect,IntegrityError
 from tokens import DB_USER,DB_PASSWORD,DB_HOST,DB_PORT,DB_NAME
 
-def execute(sql: str, params: tuple=(), fetchone=False):
+def execute(sql: str, params: tuple=(), fetchone=False, fetchall=False):
     database_connection = connect(
         database=DB_NAME,
         host=DB_HOST,
@@ -10,12 +10,16 @@ def execute(sql: str, params: tuple=(), fetchone=False):
         password=DB_PASSWORD,
         cursorclass=cursors.DictCursor
     )
+
     cursor = database_connection.cursor()
-    cursor.execute(sql,params)
+    cursor.execute(sql, params)
+
     data = None
+
     if fetchone:
         data = cursor.fetchone()
-
+    elif fetchall:
+        data = cursor.fetchall()
 
     database_connection.commit()
     database_connection.close()
@@ -40,13 +44,17 @@ def register_city(telegram_id: str, city_name: str):
             execute(sql, (user_id, city_name))
         except IntegrityError:
             ...
+def get_user_cities(telegram_id: str):
+    user = get_user(telegram_id)
+    if not user:
+        return []
 
-def get_user_cities(user_id: int):
-    sql = "SELECT * FROM cities WHERE user = %s"
-    user = get_user(str(user_id))
-    cities = execute(sql, (str(user),))  # fetchall default bo'lishi kerak
+    user_id = user["id"]
+
+    sql = "SELECT name FROM cities WHERE user = %s"
+    cities = execute(sql, (user_id,))
 
     if not cities:
-        return []  # hech qachon None emas
+        return []
 
     return [city["name"] for city in cities]
