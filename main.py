@@ -5,6 +5,7 @@ from aiogram import Dispatcher,Bot
 from tokens import BOT_TOKEN,ADMINS
 from DB_conn import register_user,register_city
 from weather import get_city_name
+from keyboard import generate_cities_keyboard
 import logging
 import asyncio
 
@@ -51,8 +52,12 @@ async def save_city(query: CallbackQuery):
         city_name=city_name,
     )
     # city ... ni sqlash
+
+    user_id = query.from_user.id
+    city_name = get_city_name(str(user_id))
+
     keyboard = InlineKeyboardBuilder()
-    await query.answer(text = "Shahar saqlangan", show_alert=True)
+    await query.answer("Shahar saqlandi", reply_markup = generate_cities_keyboard(city_name))
     keyboard.button(text = "Shahar saqlandi ✅", callback_data="...")
 
     await query.message.edit_reply_markup(reply_markup=keyboard.as_markup())

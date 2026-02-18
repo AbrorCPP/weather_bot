@@ -40,4 +40,11 @@ def register_city(telegram_id: str, city_name: str):
             execute(sql, (user_id, city_name))
         except IntegrityError:
             ...
+def get_user_cities(user_id: str) -> list | None:
+    sql = "SELECT * FROM cities WHERE user_id = %s"
+    cities = execute(sql, (user_id,))
 
+    if not cities:
+        return None
+
+    return [city["name"] for city in cities]
