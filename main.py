@@ -32,6 +32,7 @@ async def saved_city(message: Message):
     user_id = message.from_user.id
     city_name = get_user_cities(int(user_id))
 
+    await message.answer(text=city_name)
     await message.answer(text = "Saqlangan shaharlar", reply_markup = generate_cities_keyboard(city_name))
 
 
