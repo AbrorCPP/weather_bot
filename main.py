@@ -51,16 +51,21 @@ async def save_city(query: CallbackQuery):
         telegram_id=str(query.from_user.id),
         city_name=city_name,
     )
-
-    user_id = str(query.from_user.id)
-    cities = get_user_cities(user_id)  # list bo‘lishi kerak
-
+    # city ... ni sqlash
     keyboard = InlineKeyboardBuilder()
-    for city in cities:
-        keyboard.button(text=city, callback_data=f"city:{city}")
+    keyboard.button(text = "Shahar saqlandi ✅", callback_data="...")
 
     await query.message.edit_reply_markup(reply_markup=keyboard.as_markup())
-    await query.answer("Shahar saqlandi ✅")
+
+@dp.message(lambda message: message.text == "/saved")
+async def saved_city(message: Message):
+
+    user_id = message.from_user.id
+    city_name = get_user_cities(user_id)
+
+    await message.answer(text = "Saqlangan shaharlar", reply_markup = generate_cities_keyboard(city_name))
+
+
 
 @dp.callback_query(lambda call: "..." in call.data)
 async def show_alert(call: CallbackQuery):
@@ -78,5 +83,3 @@ async def main():
 
 asyncio.run(main())
 
-
-# ishlamadi

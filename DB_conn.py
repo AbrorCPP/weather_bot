@@ -41,7 +41,7 @@ def register_city(telegram_id: str, city_name: str):
         except IntegrityError:
             ...
 
-def get_user_cities(user_id: str):
+def get_user_cities(user_id: int):
     sql = "SELECT * FROM cities WHERE user_id = %s"
     cities = execute(sql, (user_id,))  # fetchall default bo'lishi kerak
 
