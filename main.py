@@ -25,6 +25,16 @@ async def register(message: Message):
     except Exception as e:
         await message.answer(text=f"Siz bazada mavjudisiz✨\nXatolik: {e}")
 
+
+@dp.message(lambda message: message.text == "/saved")
+async def saved_city(message: Message):
+
+    user_id = message.from_user.id
+    city_name = get_user_cities(user_id)
+
+    await message.answer(text = "Saqlangan shaharlar", reply_markup = generate_cities_keyboard(city_name))
+
+
 @dp.message()
 async def answer_weather_data(message: Message):
     city_name = message.text
@@ -56,14 +66,6 @@ async def save_city(query: CallbackQuery):
     keyboard.button(text = "Shahar saqlandi ✅", callback_data="...")
 
     await query.message.edit_reply_markup(reply_markup=keyboard.as_markup())
-
-@dp.message(lambda message: message.text == "/saved")
-async def saved_city(message: Message):
-
-    user_id = message.from_user.id
-    city_name = get_user_cities(user_id)
-
-    await message.answer(text = "Saqlangan shaharlar", reply_markup = generate_cities_keyboard(city_name))
 
 
 
