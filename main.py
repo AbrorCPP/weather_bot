@@ -31,7 +31,7 @@ async def answer_weather_data(message: Message):
 
     if weather_data:
         keyboard = InlineKeyboardBuilder()
-        keyboard.button(text = "Shaharni saqlash", callback_data=f"save:{city_name}", url = "https://www.youtube.com/watch?v=fRiiWIl5M3w")
+        keyboard.button(text = "Shaharni saqlash", callback_data=f"save:{city_name}")
 
         await message.answer(
             text=weather_data,
