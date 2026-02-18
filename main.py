@@ -3,7 +3,7 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram import Dispatcher,Bot
 from tokens import BOT_TOKEN,ADMINS
-from DB_conn import register_user
+from DB_conn import register_user,register_city
 from weather import get_city_name
 import logging
 import asyncio
@@ -14,7 +14,7 @@ bot = Bot(token=BOT_TOKEN)
 @dp.message(lambda message: message.text == "/start")
 async def register(message: Message):
     try:
-        register_user(message.from_user.id, message.from_user.full_name)
+        register_user(str(message.from_user.id), message.from_user.full_name)
         t1 = f"Assalomu aleykum {message.from_user.full_name}\n"
         t1 += "Botimizga hush kelibsiz😊\n"
         t1 += "Botimiz shahar, viloyat va davlat 🏙️\n"
@@ -46,6 +46,10 @@ async def save_city(query: CallbackQuery):
     data = query.data
     city_name = data.split(":")[-1]
 
+    register_city(
+        telegram_id=str(query.from_user.id),
+        city_name=city_name,
+    )
     # city ... ni sqlash
     keyboard = InlineKeyboardBuilder()
     await query.answer(text = "Shahar saqlangan", show_alert=True)
