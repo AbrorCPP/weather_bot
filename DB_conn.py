@@ -1,7 +1,8 @@
-from pymysql import cursors,connect,IntegrityError
-from tokens import DB_USER,DB_PASSWORD,DB_HOST,DB_PORT,DB_NAME
+from pymysql import cursors, connect, IntegrityError
+from tokens import DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
 
-def execute(sql: str, params: tuple=(), fetchone=False, fetchall=False):
+
+def execute(sql: str, params: tuple = (), fetchone=False, fetchall=False):
     database_connection = connect(
         database=DB_NAME,
         host=DB_HOST,
@@ -26,33 +27,38 @@ def execute(sql: str, params: tuple=(), fetchone=False, fetchall=False):
 
     return data
 
+
 def register_user(telegram_id: str, fullname: str) -> None:
     sql = "INSERT INTO users (telegram_id, fullname) VALUES (%s, %s)"
     execute(sql, (telegram_id, fullname))
 
-def get_user(telegram_id: str) -> dict|None:
+
+def get_user(telegram_id: int) -> dict | None:
     sql = "SELECT * FROM users WHERE telegram_id = %s"
     user = execute(sql, (telegram_id,), fetchone=True)
     return user
 
-def register_city(telegram_id: str, city_name: str):
+
+def register_city(telegram_id: int, city_name: str):
     user = get_user(telegram_id)
     if user:
-        user_id = user.get("id")
+        user_id = user["id"]
         try:
-            sql = "INSERT INTO cities (user, name) VALUES (%s, %s)"
+            sql = "INSERT INTO cities (`user`, name) VALUES (%s, %s)"
             execute(sql, (user_id, city_name))
         except IntegrityError:
-            ...
-def get_user_cities(telegram_id: str):
+            pass
+
+
+def get_user_cities(telegram_id: int):
     user = get_user(telegram_id)
     if not user:
         return []
 
     user_id = user["id"]
 
-    sql = "SELECT name FROM cities WHERE user = %s"
-    cities = execute(sql, (user_id,))
+    sql = "SELECT name FROM cities WHERE `user` = %s"
+    cities = execute(sql, (user_id,), fetchall=True)
 
     if not cities:
         return []
