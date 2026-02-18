@@ -47,4 +47,7 @@ def get_user_cities(user_id: str) -> list | None:
     if not cities:
         return None
 
-    return [city["name"] for city in cities]
+    city =  [city["name"] for city in cities]
+    return city
+
+
