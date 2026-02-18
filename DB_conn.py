@@ -43,7 +43,7 @@ def register_city(telegram_id: str, city_name: str):
 
 def get_user_cities(user_id: int):
     sql = "SELECT * FROM cities WHERE user = %s"
-    cities = execute(sql, (user_id,))  # fetchall default bo'lishi kerak
+    cities = execute(sql, (int(user_id),))  # fetchall default bo'lishi kerak
 
     if not cities:
         return []  # hech qachon None emas
