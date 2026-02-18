@@ -40,14 +40,12 @@ def register_city(telegram_id: str, city_name: str):
             execute(sql, (user_id, city_name))
         except IntegrityError:
             ...
-def get_user_cities(user_id: str) -> list | None:
+
+def get_user_cities(user_id: str):
     sql = "SELECT * FROM cities WHERE user_id = %s"
-    cities = execute(sql, (user_id,))
+    cities = execute(sql, (user_id,))  # fetchall default bo'lishi kerak
 
     if not cities:
-        return None
+        return []  # hech qachon None emas
 
-    city =  [city["name"] for city in cities]
-    return city
-
-
+    return [city["name"] for city in cities]
