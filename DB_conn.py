@@ -57,4 +57,4 @@ def get_user_cities(telegram_id: str):
     if not cities:
         return []
 
-    return [city.get("name") for city in cities]
+    return [city["name"] for city in cities]
