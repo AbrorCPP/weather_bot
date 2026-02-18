@@ -11,4 +11,4 @@ def generate_cities_keyboard(cities: list) -> ReplyKeyboardMarkup:
 
     keyboard.adjust(2)
 
-    return keyboard.as_markup()
+    return keyboard.as_markup(resize_keyboard=True)
