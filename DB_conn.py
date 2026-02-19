@@ -76,6 +76,6 @@ def delete_from_user_cities(telegram_id: int) -> None:
     user = get_user(telegram_id)
     try:
         sql = "DELETE FROM cities WHERE `user` = %s"
-        execute(sql, (user,), fetchone=True)
+        execute(sql, (user["id"],))
     except IntegrityError:
         ...
