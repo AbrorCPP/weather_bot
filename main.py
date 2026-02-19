@@ -23,7 +23,7 @@ async def register(message: Message):
         t1 += "Nomini kiritsangiz bo'ldi.🤖"
         await message.answer(text=t1)
     else:
-        await message.answer(text=f"Siz bazada mavjudisiz✨\n")
+        await message.answer(text=f"Bazada mavjudisiz✨\n")
 
 
 @dp.message(lambda message: message.text == "/saved")
