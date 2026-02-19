@@ -64,13 +64,9 @@ def get_user_cities(telegram_id: int) -> list[Any]:
     return [city["name"] for city in cities]
 
 def check_if_user_id_available(telegram_id: int) -> bool:
-    user = telegram_id
     sql = "SELECT id FROM users WHERE telegram_id = %s"
-    user = execute(sql, (user,), fetchone=True)
-    if user:
-        return True
-    else:
-        return False
+    user = execute(sql, (telegram_id,), fetchone=True)
+    return bool(user)
 
 def delete_from_user_cities(telegram_id: int) -> None:
     user = get_user(telegram_id)
