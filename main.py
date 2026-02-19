@@ -1,9 +1,9 @@
 from aiogram.enums import ParseMode
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery,ReplyKeyboardRemove
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram import Dispatcher,Bot
 from tokens import BOT_TOKEN,ADMINS
-from DB_conn import register_user, register_city, get_user_cities
+from DB_conn import *
 from weather import get_city_name
 from keyboard import generate_cities_keyboard
 import logging
@@ -14,7 +14,7 @@ bot = Bot(token=BOT_TOKEN)
 
 @dp.message(lambda message: message.text == "/start")
 async def register(message: Message):
-    try:
+    if check_if_user_id_available(message.from_user.id):
         register_user(str(message.from_user.id), message.from_user.full_name)
         t1 = f"Assalomu aleykum {message.from_user.full_name}\n"
         t1 += "Botimizga hush kelibsiz😊\n"
@@ -22,8 +22,8 @@ async def register(message: Message):
         t1 += "Ob-havosi haqida ma'lumot beradi⛅\n"
         t1 += "Nomini kiritsangiz bo'ldi.🤖"
         await message.answer(text=t1)
-    except Exception as e:
-        await message.answer(text=f"Siz bazada mavjudisiz✨\nXatolik: {e}")
+    else:
+        await message.answer(text=f"Siz bazada mavjudisiz✨\n")
 
 
 @dp.message(lambda message: message.text == "/saved")
@@ -42,6 +42,13 @@ async def saved_city(message: Message):
         reply_markup=generate_cities_keyboard(cities)
     )
 
+@dp.message(lambda message: message.text == "/clear_saved")
+async def clear_saved_city(message: Message):
+    telegram_id = message.from_user.id
+    delete_from_user_cities(telegram_id)
+    await message.answer(text="Barcha shaharlar o'chirildi🏙️",reply_markup = ReplyKeyboardRemove())
+
+
 @dp.message()
 async def answer_weather_data(message: Message):
     city_name = message.text
@@ -57,7 +64,7 @@ async def answer_weather_data(message: Message):
             reply_markup=keyboard.as_markup()
         )
     else:
-        await message.answer(text = "Bunday shahar topilmadi")
+        await message.answer(text = "Bunday shahar topilmadi🏙️")
 
 @dp.callback_query()
 async def save_city(query: CallbackQuery):
@@ -65,7 +72,7 @@ async def save_city(query: CallbackQuery):
     city_name = data.split(":")[-1]
 
     register_city(
-        telegram_id=str(query.from_user.id),
+        telegram_id=query.from_user.id,
         city_name=city_name,
     )
     # city ... ni sqlash

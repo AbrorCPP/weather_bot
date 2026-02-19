@@ -56,13 +56,26 @@ def get_user_cities(telegram_id: int) -> list[Any]:
     user = get_user(telegram_id)
     if not user:
         return []
-
     user_id = user["id"]
-
     sql = "SELECT name FROM cities WHERE `user` = %s"
     cities = execute(sql, (user_id,), fetchall=True)
-
     if not cities:
         return []
-
     return [city["name"] for city in cities]
+
+def check_if_user_id_available(telegram_id: int) -> bool:
+    user = telegram_id
+    sql = "SELECT id FROM users WHERE telegram_id = %s"
+    user = execute(sql, (user,), fetchone=True)
+    if user:
+        return True
+    else:
+        return False
+
+def delete_from_user_cities(telegram_id: int) -> None:
+    user = get_user(telegram_id)
+    try:
+        sql = "DELETE FROM cities WHERE `user` = %s"
+        execute(sql, (user,), fetchone=True)
+    except IntegrityError:
+        ...
