@@ -31,10 +31,8 @@ async def saved_city(message: Message):
     telegram_id = str(message.from_user.id)
     cities = get_user_cities(int(telegram_id))
 
-    await message.answer(text = "Salom")
-
     if not cities:
-        await message.answer("Sizda hali saqlangan shahar yo‘q ❌")
+        await message.answer("Saqlangan shaharlar mavjud emas ❌")
         return
 
     await message.answer(
