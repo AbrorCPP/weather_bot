@@ -14,7 +14,7 @@ bot = Bot(token=BOT_TOKEN)
 
 @dp.message(lambda message: message.text == "/start")
 async def register(message: Message):
-    if check_if_user_id_available(message.from_user.id):
+    if not check_if_user_id_available(message.from_user.id):
         register_user(str(message.from_user.id), message.from_user.full_name)
         t1 = f"Assalomu aleykum {message.from_user.full_name}\n"
         t1 += "Botimizga hush kelibsiz😊\n"
