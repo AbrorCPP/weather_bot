@@ -12,8 +12,8 @@ def get_city_name(city:str):
     }
     response = get(URL, params=params)
     data = response.json()
-    if data["cod"] == "404":
-        return None
+    if data.get("cod") != 200:
+        return None, None
     temp = data['main']['temp']
     temp_min = data['main']['temp_min']
     temp_max = data['main']['temp_max']
