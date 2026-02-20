@@ -19,7 +19,7 @@ def get_city_name(city:str):
     temp_max = data['main']['temp_max']
     pressure = data['main']['pressure']
     humidity = data['main']['humidity']
-    photo_id = data['weather'][0]['id']
+    photo_id = data['weather'][0]['icon']
     text  = f"\nBugun <b>{city}</b>da Ob-havo⛅\n"
     text += f"\nHarorat<b> {temp} °C </b>🌡️"
     text += f"\nMaksimal harorat<b> {temp_max} °C</b>"
