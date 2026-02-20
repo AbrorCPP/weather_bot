@@ -51,7 +51,7 @@ async def answer_weather_data(message: Message):
     city_name = message.text
     weather_data,photo_id = get_city_name(city_name)
 
-    if weather_data:
+    if weather_data and photo_id:
         keyboard = InlineKeyboardBuilder()
         keyboard.button(text = "Shaharni saqlash", callback_data=f"save:{city_name}")
 
