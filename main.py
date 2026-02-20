@@ -58,7 +58,7 @@ async def answer_weather_data(message: Message):
 
         await message.answer(
             text=weather_data,
-            parse_mode=ParseMode.HTML,
+            parse_mode="HTML",
             reply_markup=keyboard.as_markup()
         )
     else:
