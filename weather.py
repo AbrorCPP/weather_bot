@@ -19,11 +19,12 @@ def get_city_name(city:str):
     temp_max = data['main']['temp_max']
     pressure = data['main']['pressure']
     humidity = data['main']['humidity']
+    photo_id = data['weather'][0]['id']
     text  = f"\nBugun <b>{city}</b>da Ob-havo⛅\n"
     text += f"\nHarorat<b> {temp} °C </b>🌡️"
     text += f"\nMaksimal harorat<b> {temp_max} °C</b>"
     text += f"\nMinimal harorat <b>{temp_min} °C</b>\n"
     text += f"\nBosim <b>{pressure} Pa</b> ⬇️"
     text += f"\nNamlik <b>{humidity} %</b> 💧\n\n"
-    return text
+    return text,photo_id
 

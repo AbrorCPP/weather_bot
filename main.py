@@ -1,4 +1,3 @@
-from aiogram.enums import ParseMode
 from aiogram.types import Message, CallbackQuery,ReplyKeyboardRemove
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram import Dispatcher,Bot
@@ -50,14 +49,15 @@ async def clear_saved_city(message: Message):
 @dp.message()
 async def answer_weather_data(message: Message):
     city_name = message.text
-    weather_data = get_city_name(city_name)
+    weather_data,photo_id = get_city_name(city_name)
 
     if weather_data:
         keyboard = InlineKeyboardBuilder()
         keyboard.button(text = "Shaharni saqlash", callback_data=f"save:{city_name}")
 
-        await message.answer(
-            text=weather_data,
+        await message.answer_photo(
+            photo= f"https://openweathermap.org/payload/api/media/file/{photo_id}.png",
+            caption=weather_data,
             parse_mode="HTML",
             reply_markup=keyboard.as_markup()
         )
